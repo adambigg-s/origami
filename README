@@ -1,0 +1,9 @@
+================================================================================
+origami
+================================================================================
+
+A small Zig library with methods like .iter(), .map(), and .fold() on types that
+make sense to be able to iterate over.
+
+I don't actually know if this is necessary possible, but I wanted to see how
+it works.
