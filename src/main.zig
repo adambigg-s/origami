@@ -16,10 +16,16 @@ pub fn main(_: std.process.Init) !void {
     try list.data.append(alloc.allocator(), 6);
     try list.data.append(alloc.allocator(), 7);
 
-    var iter = list.iter();
-    while (iter.next()) |val| {
-        std.debug.print("Iterator value: {}\n", .{val.*});
-    }
+    list.iter().forEach(print_i32);
+    list.curr = 0;
+}
+
+fn print_i32(x: i32) void {
+    std.debug.print("Value: {}\n", .{x});
+}
+
+fn double_i32(x: i32) i32 {
+    return x * 2;
 }
 
 pub const IterableStruct = struct {
@@ -28,15 +34,19 @@ pub const IterableStruct = struct {
 
     const Self = @This();
 
-    pub fn next(self: *Self) ?*i32 {
+    pub fn next(self: *Self) ?i32 {
         if (self.curr >= self.data.items.len) {
             return null;
         }
         defer self.curr += 1;
-        return &self.data.items[self.curr];
+        return self.data.items[self.curr];
     }
 
     pub fn iter(self: *Self) lib.Iterator(i32) {
         return lib.Iterator(i32).iterator(self);
+    }
+
+    pub fn iterMut(self: *Self) lib.IteratorMut(i32) {
+        return lib.IteratorMut(i32).iteratorMut(self);
     }
 };
